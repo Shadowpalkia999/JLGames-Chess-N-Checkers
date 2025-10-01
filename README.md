@@ -1,1 +1,1 @@
-# JLGames
+# JLGames Presents: Chess N Checkers
