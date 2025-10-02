@@ -4,5 +4,15 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Start_Screen.unity
+    guid: 0ab49ab5fc7b61a40b93b5b63aeb5b7a
+  - enabled: 1
+    path: Assets/Scenes/ChessScene.unity
+    guid: 12a30ca860afcc340aa29598eb9e4aa4
+  - enabled: 1
+    path: Assets/Scenes/CheckersScene.unity
+    guid: 229d0c29af493e94f935353f3691dc7e
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
