@@ -35,3 +35,27 @@ example of state after first move complete: rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1P
   setState
   getMove
 ```
+
+What Classes will we have?
+
+ChessEngine
+  Methods:
+    setPosition(FEN string)
+    getMove() (returns algebraic move)
+
+GameState (a class responsible for holding the state of the board and talking to the chess engine)
+  Methods:
+    reset()
+    getBoard (returns FEN string)
+    setBoard(FEN string)
+    move(move) (e.g. a2a3)
+  
+GamePiece (a class responsible for representing one of the pieces on the board)
+  Instance Variables:
+    position (e.g. a2)
+  Methods:
+    move(dest square) (e.g. a3)
+      (GamePiece will call the GameState object and send move a2a3)
+    getAllowedMoves() (return an array of algebraic moves that are permissible)
+   
+move allowed?
