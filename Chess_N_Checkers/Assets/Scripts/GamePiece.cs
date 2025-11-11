@@ -8,6 +8,9 @@ public class GamePiece : MonoBehaviour
     public static string COLOR_BLACK = "b";
     private string color;
     private string FENCode = "";
+
+    public GameObject highlight;
+
     public virtual string getFENCode()
     {
         if (color.Equals(COLOR_BLACK))
@@ -42,5 +45,26 @@ public class GamePiece : MonoBehaviour
     public void setPosition(string position)
     {
         Debug.Log("My position is: " + position);
+    }
+    public void highlightMoveTargets(string[] targetSquares)
+    {
+        foreach (string targetSquare in targetSquares)
+        {
+            Instantiate(highlight, GameState.coordinates(targetSquare), Quaternion.identity);
+            /*
+             * Get GameObject returned by instantiate call above.
+             * Add GameObject to a collection of highlighted squares.
+             * Call GetComponent on the GameObject to get the script.
+             * Call a method on the script called setMoveCallback and pass in this.move.
+            */
+        }
+    }
+    public void move(string targetSquare)
+    {
+        /*
+         * Move the piece.
+         * Destroy the highlighted squares.
+         * 
+        */
     }
 }

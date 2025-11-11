@@ -115,6 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7745785980080016717}
   - component: {fileID: 2156915713808756431}
+  - component: {fileID: 458617569687934105}
   m_Layer: 0
   m_Name: King
   m_TagString: Untagged
@@ -150,3 +151,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 342115fe6884e8e4bb2d7f752f71a69d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highlight: {fileID: 4862464502721482880, guid: a3e42912ad93630499878c5bab71754c, type: 3}
+--- !u!65 &458617569687934105
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7408299507535307748}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

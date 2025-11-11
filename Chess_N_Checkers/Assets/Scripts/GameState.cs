@@ -20,13 +20,14 @@ public class GameState : MonoBehaviour
     public GameObject bRook;
     public GameObject bPawn;
 
-    private float squareSize = 2.35f;
+    private static float squareSize = 2.35f;
     private GameObject[,] gameBoard = new GameObject[8, 8];
     
     void Start()
     {
         //setBoard("8/1B6/8/5p2/8/8/5Qrq/1K1R2bk w - - 0 1");
-        setBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        //setBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        setBoard("4k3/8/8/8/8/8/8/4K3 w KQkq - 0 1");
     }
     void Update()
     {
@@ -180,5 +181,12 @@ public class GameState : MonoBehaviour
 
             row++;
         }
+    }
+    public static Vector3 coordinates(string square)
+    {
+        char[] coords = square.ToCharArray();
+        int row = 'h' - coords[0];
+        int col = coords[1] - '1';
+        return new Vector3(((-3.5f + col) * squareSize), 0.5f, ((3.5f - row) * squareSize));
     }
 }
