@@ -187,6 +187,6 @@ public class GameState : MonoBehaviour
         char[] coords = square.ToCharArray();
         int row = 'h' - coords[0];
         int col = coords[1] - '1';
-        return new Vector3(((-3.5f + col) * squareSize), 0.5f, ((3.5f - row) * squareSize));
+        return new Vector3(((-3.5f + col) * squareSize), 0.2f, ((3.5f - row) * squareSize));
     }
 }
