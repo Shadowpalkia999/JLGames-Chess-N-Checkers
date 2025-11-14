@@ -9,6 +9,8 @@ public class GamePiece : MonoBehaviour
     private string color;
     private string FENCode = "";
 
+    private List<GameObject> highlights = new List<GameObject>();
+
     public GameObject highlight;
 
     public virtual string getFENCode()
@@ -50,17 +52,24 @@ public class GamePiece : MonoBehaviour
     {
         foreach (string targetSquare in targetSquares)
         {
-            Instantiate(highlight, GameState.coordinates(targetSquare), Quaternion.identity);
+            GameObject highlightedSquare = Instantiate(highlight, GameState.coordinates(targetSquare), Quaternion.identity);
+            highlights.Add(highlightedSquare);
+            HighlightBehavior sqBehavior = highlightedSquare.GetComponent<HighlightBehavior>();
+            sqBehavior.setSquare(targetSquare);
+            sqBehavior.setMoveCallBack(this);
             /*
-             * Get GameObject returned by instantiate call above.
-             * Add GameObject to a collection of highlighted squares.
-             * Call GetComponent on the GameObject to get the script.
              * Call a method on the script called setMoveCallback and pass in this.move.
             */
         }
     }
     public void move(string targetSquare)
     {
+        Debug.Log("Piece moved to " + targetSquare);
+        transform.position = GameState.coordinates(targetSquare);
+        foreach (GameObject highlight in highlights)
+        {
+            Destroy(highlight);
+        }
         /*
          * Move the piece.
          * Destroy the highlighted squares.

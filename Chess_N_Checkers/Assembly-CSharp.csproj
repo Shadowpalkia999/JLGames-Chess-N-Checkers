@@ -82,6 +82,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
+    <Compile Include="Assets\Scripts\HighlightBehavior.cs" />
     <Compile Include="Assets\Scripts\King.cs" />
     <Compile Include="Assets\Scripts\Bishop.cs" />
     <Compile Include="Assets\Scripts\Knight.cs" />
