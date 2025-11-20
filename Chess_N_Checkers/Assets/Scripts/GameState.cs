@@ -26,8 +26,8 @@ public class GameState : MonoBehaviour
     void Start()
     {
         //setBoard("8/1B6/8/5p2/8/8/5Qrq/1K1R2bk w - - 0 1");
-        //setBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        setBoard("4k3/8/8/8/8/8/8/4K3 w KQkq - 0 1");
+        setBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        //setBoard("3k4/b7/8/3n4/8/p7/8/4K3 w KQkq - 0 1");
     }
     void Update()
     {
@@ -170,10 +170,12 @@ public class GameState : MonoBehaviour
                             break;
                     }
 
-                    GameObject pieceObj = Instantiate(prefab, new Vector3(((-3.5f + col) * squareSize), 0.5f, ((3.5f - row) * squareSize)), Quaternion.identity);
+                    UnityEngine.Debug.Log("instantiating game piece");
+                    GameObject pieceObj = Instantiate(prefab, positionToVector3(GamePiece.coordsToPosition(row, col)), Quaternion.identity);
                     gameBoard[row, col] = pieceObj;
                     GamePiece piece = pieceObj.GetComponent<GamePiece>();
                     piece.setColor(color);
+                    piece.setCoords(row, col);
                     col++;
                 }
                 pointer++;
@@ -182,11 +184,11 @@ public class GameState : MonoBehaviour
             row++;
         }
     }
-    public static Vector3 coordinates(string square)
+
+    public static Vector3 positionToVector3(string position)
     {
-        char[] coords = square.ToCharArray();
-        int row = 'h' - coords[0];
-        int col = coords[1] - '1';
-        return new Vector3(((-3.5f + col) * squareSize), 0.2f, ((3.5f - row) * squareSize));
+        int[] coords = GamePiece.positionToCoords(position);
+        return new Vector3(((-3.5f + coords[1]) * squareSize), 0.2f, ((3.5f - coords[0]) * squareSize));
     }
+
 }

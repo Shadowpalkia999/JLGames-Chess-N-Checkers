@@ -35,7 +35,7 @@ public class ChessEngine : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(args.Data))
             {
-                UnityEngine.Debug.Log("===>>> " + args.Data);
+                //UnityEngine.Debug.Log("===>>> " + args.Data);
                 if (((string)args.Data).StartsWith("bestmove"))
                 {
                     string[] words = ((string)args.Data).Split(' ');
@@ -78,7 +78,7 @@ public class ChessEngine : MonoBehaviour
         if (chessCommands.Count > 0)
         {
             string cmd = (string) chessCommands.Dequeue();
-            UnityEngine.Debug.Log("===> Sending command: " + cmd);
+            //UnityEngine.Debug.Log("===> Sending command: " + cmd);
             myInputWriter.WriteLineAsync(cmd);
             myInputWriter.FlushAsync(); 
         }

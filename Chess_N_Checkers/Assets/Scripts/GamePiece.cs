@@ -8,6 +8,8 @@ public class GamePiece : MonoBehaviour
     public static string COLOR_BLACK = "b";
     private string color;
     private string FENCode = "";
+    private string position = "";
+    protected List<int[]> relativeMoves = new List<int[]>();
 
     private List<GameObject> highlights = new List<GameObject>();
 
@@ -44,36 +46,112 @@ public class GamePiece : MonoBehaviour
         }
     }
 
+    public string getPosition()
+    {
+        return position;
+    }
+
     public void setPosition(string position)
     {
-        Debug.Log("My position is: " + position);
+        this.position = position;
+        transform.position = GameState.positionToVector3(this.position);
     }
-    public void highlightMoveTargets(string[] targetSquares)
+
+    public int[] getCoords()
     {
-        foreach (string targetSquare in targetSquares)
+        int[] coords = new int[]{0, 0};
+ 
+        if (position.Equals("") || position.Length != 2)
         {
-            GameObject highlightedSquare = Instantiate(highlight, GameState.coordinates(targetSquare), Quaternion.identity);
+            return coords;
+        }
+
+        coords[0] = 8 - (int)(position[1] - '0');
+        coords[1] = (int)(position[0] - 'a');
+        return coords;
+    }
+
+    public static string coordsToPosition(int row, int col)
+    {
+        char[] coords = new char[2];
+        
+        if (row < 0 || row > 7 || col < 0 ||  col > 7)
+        {
+            return "";
+        }
+
+        coords[0] = (char)('a' + col);
+        coords[1] = (char)('0' + (8 - row));
+
+        string mypos = new string(coords);
+        return mypos;        
+    }
+
+    public static int[] positionToCoords(string square)
+    {
+        char[] coords = square.ToCharArray();
+        int col = 7 - (int)('h' - coords[0]);
+        int row = 7 - (int)(coords[1] - '1');
+        return new int[]{row, col};
+    }
+
+    public void setCoords(int row, int col)
+    {
+        setPosition(coordsToPosition(row, col));
+    }
+
+    virtual public List<int[]> getRelativeMoves()
+    {
+        return relativeMoves;
+    }
+
+    public void setRelativeMoves(List<int[]> moves)
+    {
+        relativeMoves = moves;
+    }
+
+    //returns an array of target squares based on current list of relative moves
+    public List<string> getMoves()
+    {
+        //for return value
+        List<string> moves = new List<string>();
+
+        //getCoords returns current position in zero-based row,col array with origin at top left
+        int[] coords = getCoords();
+        //must call getRelativeMoves rather than directly accessing the collection to 
+        // allow subclass (Pawn) to constrain the moves based on color
+        foreach (int[] relCoords in getRelativeMoves())
+        {
+            //relative moves are denoted as coordinates in [row, col] with + or - square count
+
+            //now check if square is valid and then add to list
+            string str = coordsToPosition(coords[0] + relCoords[0], coords[1] + relCoords[1]);
+            if (! str.Equals(""))
+            {
+                moves.Add(str);                
+            }
+        }
+
+        return moves;
+    }
+
+    public void highlightMoveTargets()
+    {
+        foreach (string targetSquare in getMoves())
+        {
+            GameObject highlightedSquare = Instantiate(highlight, GameState.positionToVector3(targetSquare), Quaternion.identity);
             highlights.Add(highlightedSquare);
             HighlightBehavior sqBehavior = highlightedSquare.GetComponent<HighlightBehavior>();
             sqBehavior.setSquare(targetSquare);
             sqBehavior.setMoveCallBack(this);
-            /*
-             * Call a method on the script called setMoveCallback and pass in this.move.
-            */
         }
     }
     public void move(string targetSquare)
     {
-        Debug.Log("Piece moved to " + targetSquare);
-        transform.position = GameState.coordinates(targetSquare);
+        setPosition(targetSquare);
         foreach (GameObject highlight in highlights)
         {
             Destroy(highlight);
         }
-        /*
-         * Move the piece.
-         * Destroy the highlighted squares.
-         * 
-        */
     }
 }

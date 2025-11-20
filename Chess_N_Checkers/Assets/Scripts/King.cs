@@ -6,12 +6,20 @@ public class King : GamePiece
 {
     void Start()
     {
-        this.setFENCode("k");      
+        this.setFENCode("k");
+
+        relativeMoves.Add(new int[]{0,1});
+        relativeMoves.Add(new int[]{0,-1});
+        relativeMoves.Add(new int[]{-1,0});
+        relativeMoves.Add(new int[]{-1,-1});
+        relativeMoves.Add(new int[]{-1,1});
+        relativeMoves.Add(new int[]{1,0});
+        relativeMoves.Add(new int[]{1,-1});
+        relativeMoves.Add(new int[]{1,1});
     }
     private void OnMouseDown()
     {
-        Debug.Log("King Clicked");
-        string[] targetSquares = new string[]{"a4", "a6", "b4", "b5", "b6"};
-        this.highlightMoveTargets(targetSquares);
+        UnityEngine.Debug.Log("King Clicked");
+        this.highlightMoveTargets();
     }
 }

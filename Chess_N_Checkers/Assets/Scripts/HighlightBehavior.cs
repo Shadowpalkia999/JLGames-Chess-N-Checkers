@@ -28,7 +28,7 @@ public class HighlightBehavior : MonoBehaviour
     }
     public void OnMouseDown()
     {
-        Debug.Log("Highlighted Space Clicked");
+        UnityEngine.Debug.Log("Highlighted Space Clicked");
         piece.move(mySquare);
     }
 }
