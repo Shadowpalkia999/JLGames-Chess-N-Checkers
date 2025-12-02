@@ -155,12 +155,12 @@ MonoBehaviour:
   wKnight: {fileID: 5313803917555832225, guid: d26f3928c4c078746a740e3e72cc0f7d, type: 3}
   wRook: {fileID: 7368937062486731715, guid: da4203d09e9a30140b09498e3be13dd2, type: 3}
   wPawn: {fileID: 6319590448516050497, guid: c4a6400761d7329479e5852f90a98641, type: 3}
-  bKing: {fileID: 7408299507535307748, guid: 8a11cbd0d6d2f264d89394a110978d91, type: 3}
-  bQueen: {fileID: 4756401341298750134, guid: c9d16f816ca80844aaccbddb3ee688a5, type: 3}
-  bBishop: {fileID: 2851896716177913522, guid: 633eb3fef02cf4c4980990d14e1ec821, type: 3}
-  bKnight: {fileID: 5313803917555832225, guid: d26f3928c4c078746a740e3e72cc0f7d, type: 3}
-  bRook: {fileID: 7368937062486731715, guid: da4203d09e9a30140b09498e3be13dd2, type: 3}
-  bPawn: {fileID: 6319590448516050497, guid: c4a6400761d7329479e5852f90a98641, type: 3}
+  bKing: {fileID: 7408299507535307748, guid: d143ea284005e49459f46f5b8f8bc787, type: 3}
+  bQueen: {fileID: 4756401341298750134, guid: 0dd5fdf2284230f46b06e84519b6ff46, type: 3}
+  bBishop: {fileID: 2851896716177913522, guid: 1dff5d7651475ee4ab307096e59dd420, type: 3}
+  bKnight: {fileID: 5313803917555832225, guid: b3e1c5ca1e8e66d4ab7ebcef2170388a, type: 3}
+  bRook: {fileID: 7368937062486731715, guid: 786c2947e0ce789469d0f77f0e106c15, type: 3}
+  bPawn: {fileID: 6319590448516050497, guid: 1d218bbdd75213541bccb953a998a2a8, type: 3}
 --- !u!4 &176743988
 Transform:
   m_ObjectHideFlags: 0
