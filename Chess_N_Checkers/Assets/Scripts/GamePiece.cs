@@ -203,7 +203,7 @@ public class GamePiece : MonoBehaviour
         }
         highlights.Clear();
     }
-    public void move(string targetSquare)
+    virtual public void move(string targetSquare)
     {
         gState.movePiece(getCoords(), positionToCoords(targetSquare));
         setPosition(targetSquare);

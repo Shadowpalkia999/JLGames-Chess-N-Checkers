@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
+    public GameObject creditsPanel;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        creditsPanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -23,5 +25,17 @@ public class SceneController : MonoBehaviour
     public void OnCheckersButtonClick()
     {
         SceneManager.LoadScene("CheckersScene");
+    }
+    public void OnCreditsButtonClick()
+    {
+        creditsPanel.SetActive(true);
+    }
+    public void OnBackButtonClick()
+    {
+        creditsPanel.SetActive(false);
+    }
+    public void OnExitButtonClick()
+    {
+        Application.Quit();
     }
 }

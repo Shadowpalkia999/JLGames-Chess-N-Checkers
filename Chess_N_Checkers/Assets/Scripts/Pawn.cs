@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Pawn : GamePiece
 {
+    private bool firstMove;
     void Start()
     {
+        firstMove = true;
         this.setFENCode("p");
 
         List<int[]> movePath = null;
@@ -27,14 +29,28 @@ public class Pawn : GamePiece
 
         if (getColor().Equals(COLOR_BLACK))
         {
-            constrainedMoves.Add(new int[]{1,0});
-        } else
+            constrainedMoves.Add(new int[] { 1, 0 });
+            if (firstMove)
+            {
+                constrainedMoves.Add(new int[] { 2, 0 });
+            }
+        }
+        else
         {
-            constrainedMoves.Add(new int[]{-1,0});
+            constrainedMoves.Add(new int[]{ -1, 0 });
+            if (firstMove)
+            {
+                constrainedMoves.Add(new int[] { -2, 0 });
+            }
         }
         
         List<List<int[]>> relMoves = new List<List<int[]>>();
         relMoves.Add(constrainedMoves);
         return relMoves;
+    }
+    override public void move(string targetSquare)
+    {
+        base.move(targetSquare);
+        firstMove = false;
     }
 }

@@ -12,12 +12,33 @@ public class King : GamePiece
         
         movePath = new List<int[]>();
         movePath.Add(new int[]{0,1});
+        relativeMoves.Add(movePath);
+
+        movePath = new List<int[]>();
         movePath.Add(new int[]{0,-1});
+        relativeMoves.Add(movePath);
+
+        movePath = new List<int[]>();
         movePath.Add(new int[]{-1,0});
+        relativeMoves.Add(movePath);
+
+        movePath = new List<int[]>();
         movePath.Add(new int[]{-1,-1});
+        relativeMoves.Add(movePath); 
+        
+        movePath = new List<int[]>();
         movePath.Add(new int[]{-1,1});
+        relativeMoves.Add(movePath); 
+        
+        movePath = new List<int[]>();
         movePath.Add(new int[]{1,0});
+        relativeMoves.Add(movePath); 
+        
+        movePath = new List<int[]>();
         movePath.Add(new int[]{1,-1});
+        relativeMoves.Add(movePath); 
+        
+        movePath = new List<int[]>();
         movePath.Add(new int[]{1,1});
         relativeMoves.Add(movePath);    
     }
