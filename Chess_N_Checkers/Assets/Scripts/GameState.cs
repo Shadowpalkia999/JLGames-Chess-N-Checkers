@@ -27,8 +27,8 @@ public class GameState : MonoBehaviour
     
     void Start()
     {
-        //setBoard("8/1B6/8/5p2/8/8/5Qrq/1K1R2bk w - - 0 1");
-        setBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        setBoard("8/1B6/8/5p2/8/8/1P3Qrq/1K1R2bk w - - 0 1");
+        //setBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         //setBoard("3k4/b7/8/3n4/8/p7/8/4K3 w KQkq - 0 1");
     }
     void Update()
@@ -227,5 +227,10 @@ public class GameState : MonoBehaviour
             g.unhighlightMoveTargets();
         }
         setSelectedPiece(newPiece);
+    }
+    public void movePiece(int[] fromCoords, int[] toCoords)
+    {
+        gameBoard[toCoords[0], toCoords[1]] = gameBoard[fromCoords[0], fromCoords[1]];
+        gameBoard[fromCoords[0], fromCoords[1]] = null;
     }
 }

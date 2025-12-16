@@ -8,36 +8,46 @@ public class Bishop : GamePiece
     {
         this.setFENCode("b");
 
-        relativeMoves.Add(new int[]{-7,-7});
-        relativeMoves.Add(new int[]{-6,-6});
-        relativeMoves.Add(new int[]{-5,-5});
-        relativeMoves.Add(new int[]{-4,-4});
-        relativeMoves.Add(new int[]{-3,-3});
-        relativeMoves.Add(new int[]{-2,-2});
-        relativeMoves.Add(new int[]{-1,-1});
+        List<int[]> movePath = null;
+        
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{-1,-1});
+        movePath.Add(new int[]{-2,-2});
+        movePath.Add(new int[]{-3,-3});
+        movePath.Add(new int[]{-4,-4});
+        movePath.Add(new int[]{-5,-5});
+        movePath.Add(new int[]{-6,-6});
+        movePath.Add(new int[]{-7,-7});
+        relativeMoves.Add(movePath);
 
-        relativeMoves.Add(new int[]{-7,7});
-        relativeMoves.Add(new int[]{-6,6});
-        relativeMoves.Add(new int[]{-5,5});
-        relativeMoves.Add(new int[]{-4,4});
-        relativeMoves.Add(new int[]{-3,3});
-        relativeMoves.Add(new int[]{-2,2});
-        relativeMoves.Add(new int[]{-1,1});
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{-1,1});
+        movePath.Add(new int[]{-2,2});
+        movePath.Add(new int[]{-3,3});
+        movePath.Add(new int[]{-4,4});
+        movePath.Add(new int[]{-5,5});
+        movePath.Add(new int[]{-6,6});
+        movePath.Add(new int[]{-7,7});
+        relativeMoves.Add(movePath);
 
-        relativeMoves.Add(new int[]{7,-7});
-        relativeMoves.Add(new int[]{6,-6});
-        relativeMoves.Add(new int[]{5,-5});
-        relativeMoves.Add(new int[]{4,-4});
-        relativeMoves.Add(new int[]{3,-3});
-        relativeMoves.Add(new int[]{2,-2});
-        relativeMoves.Add(new int[]{1,-1});
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{1,-1});
+        movePath.Add(new int[]{2,-2});
+        movePath.Add(new int[]{3,-3});
+        movePath.Add(new int[]{4,-4});
+        movePath.Add(new int[]{5,-5});
+        movePath.Add(new int[]{6,-6});
+        movePath.Add(new int[]{7,-7});
+        relativeMoves.Add(movePath);
 
-        relativeMoves.Add(new int[]{7,7});
-        relativeMoves.Add(new int[]{6,6});
-        relativeMoves.Add(new int[]{5,5});
-        relativeMoves.Add(new int[]{4,4});
-        relativeMoves.Add(new int[]{3,3});
-        relativeMoves.Add(new int[]{2,2});
-        relativeMoves.Add(new int[]{1,1});
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{1,1});
+        movePath.Add(new int[]{2,2});
+        movePath.Add(new int[]{3,3});
+        movePath.Add(new int[]{4,4});
+        movePath.Add(new int[]{5,5});
+        movePath.Add(new int[]{6,6});
+        movePath.Add(new int[]{7,7});
+        relativeMoves.Add(movePath);
     }
 }

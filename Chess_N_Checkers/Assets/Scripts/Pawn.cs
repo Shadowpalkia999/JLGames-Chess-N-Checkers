@@ -8,11 +8,19 @@ public class Pawn : GamePiece
     {
         this.setFENCode("p");
 
-        relativeMoves.Add(new int[]{-1,0});
-        relativeMoves.Add(new int[]{1,0});
+        List<int[]> movePath = null;
+        
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{-1,0});
+        relativeMoves.Add(movePath);
+        
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{1,0});
+        relativeMoves.Add(movePath);
     }
 
-    override public List<int[]> getRelativeMoves()
+
+    override public List<List<int[]>> getRelativeMoves()
     {
         //constrain the list of moves based on piece color
         List<int[]> constrainedMoves = new List<int[]>();
@@ -24,6 +32,9 @@ public class Pawn : GamePiece
         {
             constrainedMoves.Add(new int[]{-1,0});
         }
-        return constrainedMoves;
-    }    
+        
+        List<List<int[]>> relMoves = new List<List<int[]>>();
+        relMoves.Add(constrainedMoves);
+        return relMoves;
+    }
 }

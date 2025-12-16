@@ -8,13 +8,17 @@ public class King : GamePiece
     {
         this.setFENCode("k");
 
-        relativeMoves.Add(new int[]{0,1});
-        relativeMoves.Add(new int[]{0,-1});
-        relativeMoves.Add(new int[]{-1,0});
-        relativeMoves.Add(new int[]{-1,-1});
-        relativeMoves.Add(new int[]{-1,1});
-        relativeMoves.Add(new int[]{1,0});
-        relativeMoves.Add(new int[]{1,-1});
-        relativeMoves.Add(new int[]{1,1});
+        List<int[]> movePath = null;
+        
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{0,1});
+        movePath.Add(new int[]{0,-1});
+        movePath.Add(new int[]{-1,0});
+        movePath.Add(new int[]{-1,-1});
+        movePath.Add(new int[]{-1,1});
+        movePath.Add(new int[]{1,0});
+        movePath.Add(new int[]{1,-1});
+        movePath.Add(new int[]{1,1});
+        relativeMoves.Add(movePath);    
     }
 }

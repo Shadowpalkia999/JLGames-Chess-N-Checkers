@@ -9,7 +9,12 @@ public class GamePiece : MonoBehaviour
     private string color;
     private string FENCode = "";
     private string position = "";
-    protected List<int[]> relativeMoves = new List<int[]>();
+    
+    //It seems that a piece has chains of squares where it can move with each
+    //chain representing a row, column, or diagonal.  Therefore, the possible 
+    //relative moves is a list of list of coordinates where each list of coordinates
+    //represents a direction of movement
+    protected List<List<int[]>> relativeMoves = new List<List<int[]>>();
 
     private List<GameObject> highlights = new List<GameObject>();
 
@@ -111,36 +116,42 @@ public class GamePiece : MonoBehaviour
         setPosition(coordsToPosition(row, col));
     }
 
-    virtual public List<int[]> getRelativeMoves()
+    virtual public List<List<int[]>> getRelativeMoves()
     {
         return relativeMoves;
     }
 
-    public void setRelativeMoves(List<int[]> moves)
+    public void setRelativeMoves(List<List<int[]>> moves)
     {
         relativeMoves = moves;
     }
 
-    //returns an array of target squares based on current list of relative moves
-    public List<string> getMoves()
+    //returns an list of move paths containing target squares based on current list of relative moves
+    public List<List<string>> getMoves()
     {
         //for return value
-        List<string> moves = new List<string>();
+        List<List<string>> moves = new List<List<string>>();
 
         //getCoords returns current position in zero-based row,col array with origin at top left
         int[] coords = getCoords();
+
         //must call getRelativeMoves rather than directly accessing the collection to 
         // allow subclass (Pawn) to constrain the moves based on color
-        foreach (int[] relCoords in getRelativeMoves())
+        foreach (List<int[]> relativeMovePath in getRelativeMoves())
         {
-            //relative moves are denoted as coordinates in [row, col] with + or - square count
+            List<string> movePath = new List<string>();
 
-            //now check if square is valid and then add to list
-            string str = coordsToPosition(coords[0] + relCoords[0], coords[1] + relCoords[1]);
-            if (! str.Equals(""))
+            foreach (int[] relCoords in relativeMovePath)
             {
-                moves.Add(str);                
+                //relative moves are denoted as coordinates in [row, col] with + or - square count
+                //now check if square is valid and then add to list
+                string str = coordsToPosition(coords[0] + relCoords[0], coords[1] + relCoords[1]);
+                if (! str.Equals(""))
+                {
+                    movePath.Add(str);                
+                }
             }
+            moves.Add(movePath);            
         }
 
         return moves;
@@ -148,21 +159,39 @@ public class GamePiece : MonoBehaviour
 
     public void highlightMoveTargets()
     {
-        foreach (string targetSquare in getMoves())
+        foreach (List<string> movePath in getMoves())
         {
-            int[] coords = GamePiece.positionToCoords(targetSquare);
-            if (gState.isSpaceOccupied(coords[0], coords[1]))
-            {
-                if (color.Equals(gState.getGamePieceAtCoords(coords).getColor()))
+            foreach (string targetSquare in movePath)
+            {  
+                bool endMovePathEval = false;
+                bool skipThisSquare = false;
+
+                int[] coords = GamePiece.positionToCoords(targetSquare);
+                if (gState.isSpaceOccupied(coords[0], coords[1]))
                 {
-                    continue;
+                    if (color.Equals(gState.getGamePieceAtCoords(coords).getColor()))
+                    {
+                        skipThisSquare = true;
+                    }
+                    endMovePathEval = true;
+                }
+
+                if (! skipThisSquare)
+                {                    
+                    GameObject highlightedSquare = Instantiate(highlight, GameState.positionToVector3(targetSquare), Quaternion.identity);
+                    highlights.Add(highlightedSquare);
+                    HighlightBehavior sqBehavior = highlightedSquare.GetComponent<HighlightBehavior>();
+                    sqBehavior.setSquare(targetSquare);
+                    sqBehavior.setMoveCallBack(this);
+                }
+
+                UnityEngine.Debug.Log("evaluating target square: " + targetSquare);
+                if (endMovePathEval)
+                {
+                    UnityEngine.Debug.Log("BREAK!");
+                    break;
                 }
             }
-            GameObject highlightedSquare = Instantiate(highlight, GameState.positionToVector3(targetSquare), Quaternion.identity);
-            highlights.Add(highlightedSquare);
-            HighlightBehavior sqBehavior = highlightedSquare.GetComponent<HighlightBehavior>();
-            sqBehavior.setSquare(targetSquare);
-            sqBehavior.setMoveCallBack(this);
         }
     }
     public void unhighlightMoveTargets()
@@ -176,6 +205,7 @@ public class GamePiece : MonoBehaviour
     }
     public void move(string targetSquare)
     {
+        gState.movePiece(getCoords(), positionToCoords(targetSquare));
         setPosition(targetSquare);
         foreach (GameObject highlight in highlights)
         {

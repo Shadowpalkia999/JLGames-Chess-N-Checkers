@@ -8,13 +8,38 @@ public class Knight : GamePiece
     {
         this.setFENCode("n");
 
-        relativeMoves.Add(new int[]{-2,1});
-        relativeMoves.Add(new int[]{-2,-1});
-        relativeMoves.Add(new int[]{-1,2});
-        relativeMoves.Add(new int[]{-1,-2});
-        relativeMoves.Add(new int[]{1,-2});
-        relativeMoves.Add(new int[]{1,2});
-        relativeMoves.Add(new int[]{2,-1});
-        relativeMoves.Add(new int[]{2,1});
+        List<int[]> movePath = null;
+        
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{-2,1});
+        relativeMoves.Add(movePath);
+
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{-2,-1});
+        relativeMoves.Add(movePath);
+        
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{-1,2});
+        relativeMoves.Add(movePath);
+        
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{-1,-2});
+        relativeMoves.Add(movePath);
+        
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{1,-2});
+        relativeMoves.Add(movePath);
+        
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{1,2});
+        relativeMoves.Add(movePath);
+
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{2,-1});
+        relativeMoves.Add(movePath);
+
+        movePath = new List<int[]>();
+        movePath.Add(new int[]{2,1});
+        relativeMoves.Add(movePath);        
     }
 }
