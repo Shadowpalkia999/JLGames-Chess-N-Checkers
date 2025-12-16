@@ -17,9 +17,4 @@ public class King : GamePiece
         relativeMoves.Add(new int[]{1,-1});
         relativeMoves.Add(new int[]{1,1});
     }
-    private void OnMouseDown()
-    {
-        UnityEngine.Debug.Log("King Clicked");
-        this.highlightMoveTargets();
-    }
 }

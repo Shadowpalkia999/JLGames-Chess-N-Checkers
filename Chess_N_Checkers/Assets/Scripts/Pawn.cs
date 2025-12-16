@@ -25,12 +25,5 @@ public class Pawn : GamePiece
             constrainedMoves.Add(new int[]{-1,0});
         }
         return constrainedMoves;
-    }
-
-
-    private void OnMouseDown()
-    {
-        UnityEngine.Debug.Log("Pawn Clicked");
-        this.highlightMoveTargets();
     }    
 }

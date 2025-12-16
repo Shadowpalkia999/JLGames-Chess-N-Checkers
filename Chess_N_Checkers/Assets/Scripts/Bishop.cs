@@ -40,10 +40,4 @@ public class Bishop : GamePiece
         relativeMoves.Add(new int[]{2,2});
         relativeMoves.Add(new int[]{1,1});
     }
-
-    private void OnMouseDown()
-    {
-        UnityEngine.Debug.Log("Bishop Clicked");
-        this.highlightMoveTargets();
-    }
 }

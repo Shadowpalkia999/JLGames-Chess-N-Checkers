@@ -22,6 +22,8 @@ public class GameState : MonoBehaviour
 
     private static float squareSize = 2.35f;
     private GameObject[,] gameBoard = new GameObject[8, 8];
+
+    private GamePiece selectedPiece = null;
     
     void Start()
     {
@@ -174,6 +176,7 @@ public class GameState : MonoBehaviour
                     GameObject pieceObj = Instantiate(prefab, positionToVector3(GamePiece.coordsToPosition(row, col)), Quaternion.identity);
                     gameBoard[row, col] = pieceObj;
                     GamePiece piece = pieceObj.GetComponent<GamePiece>();
+                    piece.setGameState(this);
                     piece.setColor(color);
                     piece.setCoords(row, col);
                     col++;
@@ -184,11 +187,45 @@ public class GameState : MonoBehaviour
             row++;
         }
     }
+    public bool isSpaceOccupied(int row, int col)
+    {
+        if (gameBoard[row, col] == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public GamePiece getGamePieceAtCoords(int[] coords)
+    {
+        return gameBoard[coords[0], coords[1]].GetComponent<GamePiece>();
+    }
 
     public static Vector3 positionToVector3(string position)
     {
         int[] coords = GamePiece.positionToCoords(position);
         return new Vector3(((-3.5f + coords[1]) * squareSize), 0.2f, ((3.5f - coords[0]) * squareSize));
     }
-
+    public GamePiece getSelectedPiece()
+    {
+        return this.selectedPiece;
+    }
+    public void setSelectedPiece(GamePiece selectedPiece)
+    {
+        this.selectedPiece = selectedPiece;
+    }
+    public void switchPiece(GamePiece newPiece)
+    {
+        //Call the gameobject variable's unhighlightMoveTargets upon clicking another piece.
+        GamePiece g = getSelectedPiece();
+        UnityEngine.Debug.Log("The Selected Piece was: " + g);
+        if (g != null)
+        {
+            g.unhighlightMoveTargets();
+        }
+        setSelectedPiece(newPiece);
+    }
 }

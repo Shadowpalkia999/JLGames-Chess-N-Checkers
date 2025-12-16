@@ -40,11 +40,4 @@ public class Rook : GamePiece
         relativeMoves.Add(new int[]{-2,0});
         relativeMoves.Add(new int[]{-1,0});
     }
-
-    private void OnMouseDown()
-    {
-        UnityEngine.Debug.Log("Rook Clicked");
-        this.highlightMoveTargets();
-    }
-
 }

@@ -14,7 +14,18 @@ public class GamePiece : MonoBehaviour
     private List<GameObject> highlights = new List<GameObject>();
 
     public GameObject highlight;
+    private GameState gState;
 
+    private bool isClicked = false;
+
+    public GameState getGameState()
+    {
+        return this.gState;
+    }
+    public void setGameState(GameState gameState)
+    {
+        gState = gameState;
+    }
     public virtual string getFENCode()
     {
         if (color.Equals(COLOR_BLACK))
@@ -139,6 +150,14 @@ public class GamePiece : MonoBehaviour
     {
         foreach (string targetSquare in getMoves())
         {
+            int[] coords = GamePiece.positionToCoords(targetSquare);
+            if (gState.isSpaceOccupied(coords[0], coords[1]))
+            {
+                if (color.Equals(gState.getGamePieceAtCoords(coords).getColor()))
+                {
+                    continue;
+                }
+            }
             GameObject highlightedSquare = Instantiate(highlight, GameState.positionToVector3(targetSquare), Quaternion.identity);
             highlights.Add(highlightedSquare);
             HighlightBehavior sqBehavior = highlightedSquare.GetComponent<HighlightBehavior>();
@@ -146,12 +165,36 @@ public class GamePiece : MonoBehaviour
             sqBehavior.setMoveCallBack(this);
         }
     }
+    public void unhighlightMoveTargets()
+    {
+        isClicked = false;
+        foreach (GameObject g in highlights)
+        {            
+            Destroy(g);
+        }
+        highlights.Clear();
+    }
     public void move(string targetSquare)
     {
         setPosition(targetSquare);
         foreach (GameObject highlight in highlights)
         {
             Destroy(highlight);
+        }
+    }
+    private void OnMouseDown()
+    {
+        UnityEngine.Debug.Log("Piece Clicked");
+        isClicked = !isClicked;
+        if (isClicked)
+        {
+            this.highlightMoveTargets();
+            gState.switchPiece(this);
+        }
+        else
+        {
+            unhighlightMoveTargets();
+            gState.switchPiece(null);
         }
     }
 }
