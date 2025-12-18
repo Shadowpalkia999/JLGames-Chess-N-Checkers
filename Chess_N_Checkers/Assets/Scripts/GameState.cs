@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO.Pipes;
 using System.Text;
 using UnityEngine;
+using TMPro;
 
 public class GameState : MonoBehaviour
 {
@@ -24,12 +25,18 @@ public class GameState : MonoBehaviour
     private GameObject[,] gameBoard = new GameObject[8, 8];
 
     private GamePiece selectedPiece = null;
+
+    private int turnCounter = 0;
+
+    public TMP_Text turnText;
     
     void Start()
     {
         setBoard("8/1B6/8/5p2/8/8/1P3Qrq/1K1R2bk w - - 0 1");
         //setBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         //setBoard("3k4/b7/8/3n4/8/p7/8/4K3 w KQkq - 0 1");
+
+        changeTurn();
     }
     void Update()
     {
@@ -232,5 +239,29 @@ public class GameState : MonoBehaviour
     {
         gameBoard[toCoords[0], toCoords[1]] = gameBoard[fromCoords[0], fromCoords[1]];
         gameBoard[fromCoords[0], fromCoords[1]] = null;
+    }
+    public GameObject getTargetGameObject(int row, int col)
+    {
+        return gameBoard[row, col];
+    }
+    public void changeTurn()
+    {
+        turnCounter++;
+        string turn = getTurn();
+        turnText.text = "Turn: " + turn;
+    }
+    public string getTurn()
+    {
+        int turnRemainder = turnCounter % 2;
+        if (turnRemainder == 1)
+        {
+            //turn is white
+            return GamePiece.COLOR_WHITE;
+        }
+        else
+        {
+            //turn is black
+            return GamePiece.COLOR_BLACK;
+        }
     }
 }

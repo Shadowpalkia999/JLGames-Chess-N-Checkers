@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GamePiece : MonoBehaviour
 {
-    public static string COLOR_WHITE = "w";
-    public static string COLOR_BLACK = "b";
+    public const string COLOR_WHITE = "White";
+    public const string COLOR_BLACK = "Black";
     private string color;
     private string FENCode = "";
     private string position = "";
@@ -205,26 +205,39 @@ public class GamePiece : MonoBehaviour
     }
     virtual public void move(string targetSquare)
     {
+        int[] coords = positionToCoords(targetSquare);
+        if (gState.isSpaceOccupied(coords[0], coords[1]))
+        {
+            Capture(gState.getTargetGameObject(coords[0], coords[1]));
+        }
         gState.movePiece(getCoords(), positionToCoords(targetSquare));
         setPosition(targetSquare);
         foreach (GameObject highlight in highlights)
         {
             Destroy(highlight);
         }
+        gState.changeTurn();
     }
     private void OnMouseDown()
     {
-        UnityEngine.Debug.Log("Piece Clicked");
-        isClicked = !isClicked;
-        if (isClicked)
+        if (getColor().Equals(gState.getTurn()))
         {
-            this.highlightMoveTargets();
-            gState.switchPiece(this);
+            UnityEngine.Debug.Log("Piece Clicked");
+            isClicked = !isClicked;
+            if (isClicked)
+            {
+                this.highlightMoveTargets();
+                gState.switchPiece(this);
+            }
+            else
+            {
+                unhighlightMoveTargets();
+                gState.switchPiece(null);
+            }
         }
-        else
-        {
-            unhighlightMoveTargets();
-            gState.switchPiece(null);
-        }
+    }
+    private void Capture(GameObject capturedPiece)
+    {
+        Destroy(capturedPiece);
     }
 }
