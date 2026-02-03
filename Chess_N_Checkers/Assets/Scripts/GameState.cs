@@ -21,6 +21,7 @@ public class GameState : MonoBehaviour
     public GameObject bKnight;
     public GameObject bRook;
     public GameObject bPawn;
+    public GameObject resultPanel;
 
     public int MIN_ROW_COORD = 0;
     public int MAX_ROW_COORD = 7;
@@ -35,6 +36,7 @@ public class GameState : MonoBehaviour
     private int turnCounter = 0;
 
     public TMP_Text turnText;
+    public TMP_Text resultText;
     
     void Start()
     {
