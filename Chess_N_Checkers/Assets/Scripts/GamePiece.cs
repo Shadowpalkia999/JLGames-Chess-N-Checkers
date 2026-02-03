@@ -87,6 +87,26 @@ public class GamePiece : MonoBehaviour
         return coords;
     }
 
+    //example: getCoordsForRelativeSquare(int[]{ 1, -1 })
+    public int[] getCoordsForRelativeSquare(int[] relSquare)
+    {
+        int[] myCoords = getCoords();
+        myCoords[0] = myCoords[0] + relSquare[0];
+        myCoords[1] = myCoords[1] + relSquare[1];
+        return myCoords;
+    }
+
+    virtual public bool canCapture(GamePiece piece)
+    {
+        if (getColor() == piece.getColor())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+
     public static string coordsToPosition(int row, int col)
     {
         char[] coords = new char[2];
@@ -169,7 +189,7 @@ public class GamePiece : MonoBehaviour
                 int[] coords = GamePiece.positionToCoords(targetSquare);
                 if (gState.isSpaceOccupied(coords[0], coords[1]))
                 {
-                    if (color.Equals(gState.getGamePieceAtCoords(coords).getColor()))
+                    if (! canCapture(gState.getGamePieceAtCoords(coords)))
                     {
                         skipThisSquare = true;
                     }
