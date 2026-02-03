@@ -5,6 +5,7 @@ using System.IO.Pipes;
 using System.Text;
 using UnityEngine;
 using TMPro;
+using System.Runtime.CompilerServices;
 
 public class GameState : MonoBehaviour
 {
@@ -20,6 +21,11 @@ public class GameState : MonoBehaviour
     public GameObject bKnight;
     public GameObject bRook;
     public GameObject bPawn;
+
+    public int MIN_ROW_COORD = 0;
+    public int MAX_ROW_COORD = 7;
+    public int MIN_COL_COORD = 0;
+    public int MAX_COL_COORD = 7;
 
     private static float squareSize = 2.35f;
     private GameObject[,] gameBoard = new GameObject[8, 8];
@@ -196,6 +202,15 @@ public class GameState : MonoBehaviour
     }
     public bool isSpaceOccupied(int row, int col)
     {
+        int[] coords = { row, col };
+        if (coords[0] < MIN_ROW_COORD || 
+            coords[0] > MAX_ROW_COORD ||
+            coords[1] < MIN_COL_COORD ||
+            coords[1] > MAX_COL_COORD)
+        {
+            return false;
+        }
+
         if (gameBoard[row, col] == null)
         {
             return false;
@@ -208,6 +223,13 @@ public class GameState : MonoBehaviour
 
     public GamePiece getGamePieceAtCoords(int[] coords)
     {
+        if (coords[0] < MIN_ROW_COORD || 
+            coords[0] > MAX_ROW_COORD ||
+            coords[1] < MIN_COL_COORD ||
+            coords[1] > MAX_COL_COORD)
+        {
+            throw new System.IndexOutOfRangeException("Coordinates outside of board boundary.");
+        }
         return gameBoard[coords[0], coords[1]].GetComponent<GamePiece>();
     }
 
