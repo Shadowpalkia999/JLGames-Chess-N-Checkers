@@ -21,7 +21,11 @@ public class GameState : MonoBehaviour
     public GameObject bKnight;
     public GameObject bRook;
     public GameObject bPawn;
+    public GameObject checkPanel;
     public GameObject resultPanel;
+
+    private GamePiece whiteKingPiece;
+    private GamePiece blackKingPiece;
 
     public int MIN_ROW_COORD = 0;
     public int MAX_ROW_COORD = 7;
@@ -36,6 +40,7 @@ public class GameState : MonoBehaviour
     private int turnCounter = 0;
 
     public TMP_Text turnText;
+    public TMP_Text checkText;
     public TMP_Text resultText;
     
     void Start()
@@ -45,6 +50,8 @@ public class GameState : MonoBehaviour
         //setBoard("3k4/b7/8/3n4/8/p7/8/4K3 w KQkq - 0 1");
 
         changeTurn();
+        checkPanel.SetActive(false);
+        resultPanel.SetActive(false);
     }
     void Update()
     {
@@ -191,6 +198,14 @@ public class GameState : MonoBehaviour
                     GameObject pieceObj = Instantiate(prefab, positionToVector3(GamePiece.coordsToPosition(row, col)), Quaternion.identity);
                     gameBoard[row, col] = pieceObj;
                     GamePiece piece = pieceObj.GetComponent<GamePiece>();
+                    if (nextChar == 'k')
+                    {
+                        blackKingPiece = piece;
+                    }
+                    if (nextChar == 'K')
+                    {
+                        whiteKingPiece = piece;
+                    }
                     piece.setGameState(this);
                     piece.setColor(color);
                     piece.setCoords(row, col);
@@ -287,5 +302,93 @@ public class GameState : MonoBehaviour
             //turn is black
             return GamePiece.COLOR_BLACK;
         }
+    }
+    public bool canMove(string sourceSquare, string targetSquare)
+    {
+        UnityEngine.Debug.Log("Checking canMove for sourceSquare, targetSquare: " + sourceSquare + ", " + targetSquare);
+        //Move piece in gameBoard array
+        int[] currentCoords = GamePiece.positionToCoords(sourceSquare);
+        int[] destCoords = GamePiece.positionToCoords(targetSquare);
+        gameBoard[destCoords[0], destCoords[1]] = gameBoard[currentCoords[0], currentCoords[1]];
+        gameBoard[currentCoords[0], currentCoords[1]] = null;
+
+        //Evaluate board for putting self-in-check
+        bool chk = isCheck(getTurn());
+        //Return piece to sourceSquare
+        gameBoard[currentCoords[0], currentCoords[1]] = gameBoard[destCoords[0], destCoords[1]];
+        gameBoard[destCoords[0], destCoords[1]] = null;
+        if (chk)
+        {
+            UnityEngine.Debug.Log("YOU CAN'T PUT YOURSELF IN CHECK!");
+            return false;
+        }
+        return true;
+    }
+    public bool isCheck(string color)
+    {
+        if (color == GamePiece.COLOR_WHITE)
+        {
+            string wKingPosition = whiteKingPiece.getPosition();
+            List<GamePiece> blackPieces = getPieces(GamePiece.COLOR_BLACK);
+            foreach (GamePiece blackPiece in blackPieces)
+            {
+                List<List<string>> moves = blackPiece.getMoves();
+                foreach (List<string> path in moves)
+                {
+                    foreach (string square in path)
+                    {
+                        if (square == wKingPosition)
+                        {
+                            UnityEngine.Debug.Log("Found someone checking the white king from square: " + blackPiece.getPosition());
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (color == GamePiece.COLOR_BLACK)
+        {
+            string bKingPosition = blackKingPiece.getPosition();
+            List<GamePiece> whitePieces = getPieces(GamePiece.COLOR_WHITE);
+            foreach (GamePiece whitePiece in whitePieces)
+            {
+                List<List<string>> moves = whitePiece.getMoves();
+                foreach (List<string> path in moves)
+                {
+                    foreach (string square in path)
+                    {
+                        if (square == bKingPosition)
+                        {
+                            UnityEngine.Debug.Log("Found someone checking the black king from square: " + whitePiece.getPosition());
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public List<GamePiece> getPieces(string color)
+    {
+        List<GamePiece> pieces = new List<GamePiece>();
+        for (int row = 0; row < 8; row++)
+        {
+            for (int col = 0; col < 8; col++)
+            {
+                GameObject gObj = gameBoard[row, col];
+                if (gObj != null)
+                {
+                    GamePiece piece = gObj.GetComponent<GamePiece>();
+                    if (piece.getColor() == color)
+                    {
+                        pieces.Add(piece);
+                    }
+                }            
+            }
+        }
+
+        return pieces;
     }
 }
