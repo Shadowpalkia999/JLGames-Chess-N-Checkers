@@ -63,17 +63,20 @@ public class GamePiece : MonoBehaviour
         }
     }
 
+    //returns the position of the piece in algebraic notation, e.g. "a2" or "f6"
     public string getPosition()
     {
         return position;
     }
 
+    //sets the position of the piece in algebraic notation, e.g. "a2" or "f6"
     public void setPosition(string position)
     {
         this.position = position;
         transform.position = GameState.positionToVector3(this.position);
     }
 
+    //returns the position of the piece in array coordinates from top left corner from white's perspective e.g. [0,0] for black's queen-side rook and [4,7] for white's king in starting position
     public int[] getCoords()
     {
         int[] coords = new int[]{0, 0};
@@ -162,14 +165,36 @@ public class GamePiece : MonoBehaviour
         {
             List<string> movePath = new List<string>();
 
+            bool endMovePathEval = false;
+            bool skipThisSquare = false;
+
             foreach (int[] relCoords in relativeMovePath)
             {
                 //relative moves are denoted as coordinates in [row, col] with + or - square count
                 //now check if square is valid and then add to list
-                string str = coordsToPosition(coords[0] + relCoords[0], coords[1] + relCoords[1]);
-                if (! str.Equals(""))
+                int row = coords[0] + relCoords[0];
+                int col = coords[1] + relCoords[1];
+                string pos = coordsToPosition(row, col);
+                if (! pos.Equals(""))
                 {
-                    movePath.Add(str);                
+                    if (gState.isSpaceOccupied(row, col))
+                    {
+                        if (!canCapture(gState.getGamePieceAtCoords(new int[] {row, col})))
+                        {
+                            skipThisSquare = true;
+                        }
+                        endMovePathEval = true;
+                    }
+
+                    if (!skipThisSquare)
+                    {
+                        movePath.Add(pos);
+                    }
+
+                    if (endMovePathEval)
+                    {
+                        break;
+                    }
                 }
             }
             moves.Add(movePath);            
@@ -184,40 +209,12 @@ public class GamePiece : MonoBehaviour
         {
             foreach (string targetSquare in movePath)
             {  
-                bool endMovePathEval = false;
-                bool skipThisSquare = false;
 
-                int[] coords = GamePiece.positionToCoords(targetSquare);
-                if (gState.isSpaceOccupied(coords[0], coords[1]))
-                {
-                    GamePiece targetSquarePiece = gState.getGamePieceAtCoords(coords);
-                    if (! canCapture(targetSquarePiece))
-                    {
-                        skipThisSquare = true;
-                    }
-                    else
-                    {
-                        //this square has a piece that can be captured
-                        targetSquarePiece.setCaptureCallBack(this);
-                    }
-                    endMovePathEval = true;
-                }
-
-                if (! skipThisSquare)
-                {                    
-                    GameObject highlightedSquare = Instantiate(highlight, GameState.positionToVector3(targetSquare), Quaternion.identity);
-                    highlights.Add(highlightedSquare);
-                    HighlightBehavior sqBehavior = highlightedSquare.GetComponent<HighlightBehavior>();
-                    sqBehavior.setSquare(targetSquare);
-                    sqBehavior.setMoveCallBack(this);
-                }
-
-                UnityEngine.Debug.Log("evaluating target square: " + targetSquare);
-                if (endMovePathEval)
-                {
-                    UnityEngine.Debug.Log("BREAK!");
-                    break;
-                }
+                GameObject highlightedSquare = Instantiate(highlight, GameState.positionToVector3(targetSquare), Quaternion.identity);
+                highlights.Add(highlightedSquare);
+                HighlightBehavior sqBehavior = highlightedSquare.GetComponent<HighlightBehavior>();
+                sqBehavior.setSquare(targetSquare);
+                sqBehavior.setMoveCallBack(this);                             
             }
         }
     }
@@ -227,6 +224,7 @@ public class GamePiece : MonoBehaviour
         foreach (GameObject g in highlights)
         {        
             clearCaptureCallbackOnHighlightedSquare(g);
+        {            
             Destroy(g);
         }
         highlights.Clear();
