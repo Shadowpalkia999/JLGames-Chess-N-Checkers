@@ -222,9 +222,8 @@ public class GamePiece : MonoBehaviour
     {
         isClicked = false;
         foreach (GameObject g in highlights)
-        {        
-            clearCaptureCallbackOnHighlightedSquare(g);
-        {            
+        {
+            clearCaptureCallbackOnHighlightedSquare(g);            
             Destroy(g);
         }
         highlights.Clear();
