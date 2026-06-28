@@ -247,7 +247,13 @@ public class GameState : MonoBehaviour
         {
             throw new System.IndexOutOfRangeException("Coordinates outside of board boundary.");
         }
-        return gameBoard[coords[0], coords[1]].GetComponent<GamePiece>();
+        GameObject gObject = gameBoard[coords[0], coords[1]];
+        if (gObject == null)
+        {
+            return null;
+        }
+        
+        return gObject.GetComponent<GamePiece>();
     }
 
     public static Vector3 positionToVector3(string position)

@@ -20,6 +20,7 @@ public class GamePiece : MonoBehaviour
 
     public GameObject highlight;
     private GameState gState;
+    private GamePiece capturingPiece = null;
 
     private bool isClicked = false;
 
@@ -189,9 +190,15 @@ public class GamePiece : MonoBehaviour
                 int[] coords = GamePiece.positionToCoords(targetSquare);
                 if (gState.isSpaceOccupied(coords[0], coords[1]))
                 {
-                    if (! canCapture(gState.getGamePieceAtCoords(coords)))
+                    GamePiece targetSquarePiece = gState.getGamePieceAtCoords(coords);
+                    if (! canCapture(targetSquarePiece))
                     {
                         skipThisSquare = true;
+                    }
+                    else
+                    {
+                        //this square has a piece that can be captured
+                        targetSquarePiece.setCaptureCallBack(this);
                     }
                     endMovePathEval = true;
                 }
@@ -218,7 +225,8 @@ public class GamePiece : MonoBehaviour
     {
         isClicked = false;
         foreach (GameObject g in highlights)
-        {            
+        {        
+            clearCaptureCallbackOnHighlightedSquare(g);
             Destroy(g);
         }
         highlights.Clear();
@@ -232,16 +240,14 @@ public class GamePiece : MonoBehaviour
         }
         gState.movePiece(getCoords(), positionToCoords(targetSquare));
         setPosition(targetSquare);
-        foreach (GameObject highlight in highlights)
-        {
-            Destroy(highlight);
-        }
+        unhighlightMoveTargets();        
         gState.changeTurn();
     }
     private void OnMouseDown()
     {
         if (getColor().Equals(gState.getTurn()))
         {
+            //you clicked on me to move me
             UnityEngine.Debug.Log("Piece Clicked");
             isClicked = !isClicked;
             if (isClicked)
@@ -255,6 +261,43 @@ public class GamePiece : MonoBehaviour
                 gState.switchPiece(null);
             }
         }
+        else
+        {
+            //you clicked on me to capture me or you clicked when it wasn't my turn
+            UnityEngine.Debug.Log("Are you trying to capture me?");
+            if (capturingPiece != null)
+            {
+                UnityEngine.Debug.Log("Yes, you are trying to capture me.");
+                capturingPiece.move(getPosition());
+                setCaptureCallBack(null);
+            }
+            else
+            {
+                UnityEngine.Debug.Log("No. You are not trying to capture me.");
+            }
+        }
+    }
+    public void clearCaptureCallbackOnHighlightedSquare(GameObject highlight)
+    {
+        //determine if there is a game piece on the highlighted square and clear it callback
+        HighlightBehavior sqBehavior = highlight.GetComponent<HighlightBehavior>();
+        string square = sqBehavior.getSquare();
+        UnityEngine.Debug.Log("unhighlighting square: " + square);
+        int[] sqCoords = GamePiece.positionToCoords(square); 
+        GamePiece gpiece = gState.getGamePieceAtCoords(sqCoords);
+        if (gpiece != null)
+        {
+            UnityEngine.Debug.Log("clearing capture callback");
+            gpiece.setCaptureCallBack(null);
+        }
+        else
+        {
+            UnityEngine.Debug.Log("skipping the clearing of capture callback");                
+        }             
+    }
+    public void setCaptureCallBack(GamePiece selectedPiece)
+    {
+        capturingPiece = selectedPiece;
     }
     private void Capture(GameObject capturedPiece)
     {

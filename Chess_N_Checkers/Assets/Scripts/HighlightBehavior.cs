@@ -22,6 +22,10 @@ public class HighlightBehavior : MonoBehaviour
     {
         piece = selectedPiece;
     }
+    public string getSquare()
+    {
+        return mySquare;
+    }
     public void setSquare(string square)
     {
         mySquare = square;
