@@ -230,15 +230,18 @@ public class GamePiece : MonoBehaviour
     }
     virtual public void move(string targetSquare)
     {
-        int[] coords = positionToCoords(targetSquare);
-        if (gState.isSpaceOccupied(coords[0], coords[1]))
+        if (gState.canMove(this.getPosition(), targetSquare))
         {
-            Capture(gState.getTargetGameObject(coords[0], coords[1]));
+            int[] coords = positionToCoords(targetSquare);
+            if (gState.isSpaceOccupied(coords[0], coords[1]))
+            {
+                Capture(gState.getTargetGameObject(coords[0], coords[1]));
+            }
+            gState.movePiece(getCoords(), positionToCoords(targetSquare));
+            setPosition(targetSquare);
+            unhighlightMoveTargets();        
+            gState.changeTurn();            
         }
-        gState.movePiece(getCoords(), positionToCoords(targetSquare));
-        setPosition(targetSquare);
-        unhighlightMoveTargets();        
-        gState.changeTurn();
     }
     private void OnMouseDown()
     {
